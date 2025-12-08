@@ -4,6 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
 public class Main {
     public static void main(String[] args) {
 
@@ -39,7 +42,9 @@ public class Main {
 
                 System.out.println(id + "번 글이 작성되었습니다.");
                 lastArticleId++;
-            } else if (cmd.equals("article list")) {
+            }
+
+            else if (cmd.equals("article list")) {
                 System.out.println("==게시글 목록==");
                 if (articles.size() == 0) {
                     System.out.println("아무것도 없음");
@@ -69,6 +74,7 @@ public class Main {
                     continue;
                 }
                 System.out.println("번호 : " + foundArticle.getId());
+                System.out.println("날짜: " + foundArticle.getRegDate());
                 System.out.println("제목 : " + foundArticle.getTitle());
                 System.out.println("내용 : " + foundArticle.getBody());
 
@@ -110,8 +116,8 @@ public class Main {
                     System.out.println("해당 게시글은 없습니다");
                     continue;
                 }
-                System.out.println("기존 title : " + foundArticle.getTitle());
-                System.out.println("기존 body : " + foundArticle.getBody());
+                System.out.println("기존 제목 : " + foundArticle.getTitle());
+                System.out.println("기존 내용 : " + foundArticle.getBody());
                 System.out.print("새 제목 : ");
                 String newTitle = sc.nextLine().trim();
                 System.out.print("새 내용 : ");
@@ -131,6 +137,7 @@ public class Main {
 
 class Article {
     private int id;
+    private LocalDateTime regDate;
     private String title;
     private String body;
 
@@ -158,9 +165,17 @@ class Article {
         this.body = body;
     }
 
+    public String getRegDate() {
+        if (this.regDate == null) {
+            return "";
+        }
+        return this.regDate.format(DateTimeFormatter.ofPattern("yyyy년 MM월 dd일 HH시 mm분 ss초"));
+    }
+
     public Article(int id, String title, String body) {
         this.id = id;
         this.title = title;
         this.body = body;
+        this.regDate = LocalDateTime.now();
     }
 }
