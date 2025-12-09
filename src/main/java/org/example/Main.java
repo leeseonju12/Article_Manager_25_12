@@ -44,35 +44,50 @@ public class Main {
 
                 System.out.println(id + "번 글이 작성되었습니다.");
                 lastArticleId++;
-            } else if (cmd.equals("article list")) {
+            } else if (cmd.startsWith("article list")) {
                 System.out.println("==게시글 목록==");
                 if (articles.size() == 0) {
                     System.out.println("아무것도 없음");
-                } else {
-                    System.out.println("   번호  /       날짜       /       제목     /   내용  ");
-                    for (int i = articles.size() - 1; i >= 0; i--) {
-                        Article article = articles.get(i);
-                        if (Util.getNowStr().split(" ")[0].equals(article.getRegDate().split(" ")[0])) {
-                            System.out.printf("   %d     /    %s          /    %s     /     %s   \n", article.getId(), article.getRegDate().split(" ")[1], article.getTitle(), article.getBody());
-                        } else {
-                            System.out.printf("   %d     /    %s          /    %s     /     %s   \n", article.getId(), article.getRegDate().split(" ")[0], article.getTitle(), article.getBody());
-                        }
+                    continue;
+                }
 
+
+                String searchKeyword = cmd.substring("article list".length()).trim();
+
+                List<Article> forPrintArticles = articles;
+
+                if (searchKeyword.length() > 0) {
+                    System.out.println("검색어 : " + searchKeyword);
+                    forPrintArticles = new ArrayList<>();
+
+                    for (Article article : articles) {
+                        if (article.getTitle().contains(searchKeyword)) {
+                            forPrintArticles.add(article);
+                        }
+                    }
+                    if (forPrintArticles.size() == 0) {
+                        System.out.println("검색 결과 없음");
+                        continue;
                     }
                 }
+
+                System.out.println("   번호  /       날짜       /       제목     /   내용  ");
+                for (int i = forPrintArticles.size() - 1; i >= 0; i--) {
+                    Article article = forPrintArticles.get(i);
+                    if (Util.getNowStr().split(" ")[0].equals(article.getRegDate().split(" ")[0])) {
+                        System.out.printf("   %d     /    %s          /    %s     /     %s   \n", article.getId(), article.getRegDate().split(" ")[1], article.getTitle(), article.getBody());
+                    } else {
+                        System.out.printf("   %d     /    %s          /    %s     /     %s   \n", article.getId(), article.getRegDate().split(" ")[0], article.getTitle(), article.getBody());
+                    }
+
+                }
+
             } else if (cmd.startsWith("article detail")) {
                 System.out.println("==게시글 상세보기==");
 
                 int id = Integer.parseInt(cmd.split(" ")[2]);
 
-                Article foundArticle = null;
-
-                for (Article article : articles) {
-                    if (article.getId() == id) {
-                        foundArticle = article;
-                        break;
-                    }
-                }
+                Article foundArticle = getArticleById(id);
 
                 if (foundArticle == null) {
                     System.out.println("해당 게시글은 없습니다");
@@ -89,14 +104,7 @@ public class Main {
 
                 int id = Integer.parseInt(cmd.split(" ")[2]);
 
-                Article foundArticle = null;
-
-                for (Article article : articles) {
-                    if (article.getId() == id) {
-                        foundArticle = article;
-                        break;
-                    }
-                }
+                Article foundArticle = getArticleById(id);
 
                 if (foundArticle == null) {
                     System.out.println("해당 게시글은 없습니다");
@@ -109,14 +117,7 @@ public class Main {
 
                 int id = Integer.parseInt(cmd.split(" ")[2]);
 
-                Article foundArticle = null;
-
-                for (Article article : articles) {
-                    if (article.getId() == id) {
-                        foundArticle = article;
-                        break;
-                    }
-                }
+                Article foundArticle = getArticleById(id);
 
                 if (foundArticle == null) {
                     System.out.println("해당 게시글은 없습니다");
@@ -143,12 +144,23 @@ public class Main {
         sc.close();
     }
 
-    /** 게시글 테스트 데이터 생성 **/
+    private static Article getArticleById(int id) {
+        for (Article article : articles) {
+            if (article.getId() == id) {
+                return article;
+            }
+        }
+        return null;
+    }
+
+    /**
+     * 게시글 테스트 데이터 생성
+     **/
     private static void makeTestData() {
         System.out.println("==테스트 데이터 생성==");
-        articles.add(new Article(1, "2025-12-07 12:12:12", "2025-12-07 12:12:12", "제목 1", "내용 1"));
-        articles.add(new Article(2, Util.getNowStr(),  Util.getNowStr(), "제목 2", "내용 2"));
-        articles.add(new Article(3,  Util.getNowStr(),  Util.getNowStr(), "제목 3", "내용 3"));
+        articles.add(new Article(1, "2025-12-07 12:12:12", "2025-12-07 12:12:12", "제목 123", "내용 1"));
+        articles.add(new Article(2, Util.getNowStr(), Util.getNowStr(), "제목 23", "내용 2"));
+        articles.add(new Article(3, Util.getNowStr(), Util.getNowStr(), "제목 1234", "내용 3"));
     }
 }
 
