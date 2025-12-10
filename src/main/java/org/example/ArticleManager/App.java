@@ -42,6 +42,31 @@ public class App {
 
             String actionMethodName = cmdBits[1];
 
+            String forLoginChecks = controllerName + "/" + actionMethodName;
+
+            switch (forLoginChecks) {
+                case "article/write":
+                case "article/delete":
+                case "article/modify":
+                case "member/logout":
+                    if (Controller.isLogined() == false) {
+                        System.out.println("로그인이 필요해");
+                        continue;
+                    }
+                    break;
+            }
+
+            switch (forLoginChecks) {
+                case "member/login":
+                case "member/join":
+                    if (Controller.isLogined()) {
+                        System.out.println("로그아웃이 필요해");
+                        continue;
+                    }
+                    break;
+            }
+
+
             if (controllerName.equals("article")) {
                 controller = articleController;
             } else if (controllerName.equals("member")) {

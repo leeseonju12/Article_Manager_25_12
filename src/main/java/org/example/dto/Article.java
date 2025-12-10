@@ -4,13 +4,23 @@ public class Article extends Dto{
 
     private String title;
     private String body;
+    private int memberId;
 
-    public Article(int id, String regDate, String updateDate, String title, String body) {
+    public Article(int id, String regDate, String updateDate, String title, String body, int memberId) {
         this.id = id;
         this.regDate = regDate;
         this.updateDate = updateDate;
         this.title = title;
         this.body = body;
+        this.memberId = memberId;
+    }
+
+    public int getMemberId() {
+        return memberId;
+    }
+
+    public void setMemberId(int memberId) {
+        this.memberId = memberId;
     }
 
     public int getId() {

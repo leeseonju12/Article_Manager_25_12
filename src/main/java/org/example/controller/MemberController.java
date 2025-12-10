@@ -12,7 +12,6 @@ public class MemberController extends Controller {
     private Scanner sc;
     private List<Member> members;
     private String cmd;
-    private Member loginedMember = null;
 
     private int lastMemberId = 3;
 
@@ -40,27 +39,14 @@ public class MemberController extends Controller {
         }
     }
 
-    private boolean isLogined(){
-        return loginedMember != null;
-    }
-
     private void doLogout() {
-        if(!isLogined()) {
-            System.out.println("이미 로그아웃 중");
-            return;
-        }
-
         loginedMember = null;
 
         System.out.println("로그아웃 됨");
     }
 
     private void doLogin() {
-        if(isLogined()) {
-            System.out.println("이미 로그인 중");
-            return;
-        }
-        System.out.println("==회원 로그인==");
+        System.out.println("==로그인==");
 
         System.out.print("로그인 아이디 : ");
         String loginId = sc.nextLine().trim();
@@ -150,8 +136,8 @@ public class MemberController extends Controller {
      **/
     public void makeTestData() {
         System.out.println("==회원 테스트 데이터 생성==");
-        members.add(new Member(1, Util.getNowStr(), Util.getNowStr(), "Test1", "test1", "회원1"));
-        members.add(new Member(2, Util.getNowStr(), Util.getNowStr(), "Test2", "test2", "회원2"));
-        members.add(new Member(3, Util.getNowStr(), Util.getNowStr(), "Test3", "test3", "회원3"));
+        members.add(new Member(1, Util.getNowStr(), Util.getNowStr(), "test1", "test1", "회원1"));
+        members.add(new Member(2, Util.getNowStr(), Util.getNowStr(), "test2", "test2", "회원2"));
+        members.add(new Member(3, Util.getNowStr(), Util.getNowStr(), "test3", "test3", "회원3"));
     }
 }
